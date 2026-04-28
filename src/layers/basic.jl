@@ -929,3 +929,13 @@ EmbeddingBag(weight::AbstractMatrix) = EmbeddingBag(weight, mean)
 function Base.show(io::IO, m::EmbeddingBag)
   print(io, "EmbeddingBag(", size(m.weight, 2), " => ", size(m.weight, 1), ")")
 end
+
+struct Untrainable{T}
+  f::T
+end
+
+function(m::Untrainable{T})(x) where {T} 
+  m.f(x)
+end
+
+Flux.trainable(m::Untrainable{T}) where {T} = (;)
